@@ -1,5 +1,6 @@
 # 台州科技职业学院《学生手册》知识库
-由25级Bug学长提供
+
+由 25 级 Bug 学长提供并维护。
 
 > 把一份学生手册配套题库，整理成 AI 能查、能引、能追溯的校规知识库。
 
@@ -58,9 +59,10 @@
 ## 目录结构
 
 ```
-tzkj-student-handbook/
+tzkj-handbook/
 ├── SKILL.md                    AI 入口：触发条件、使用流程、回答规范
 ├── README.md                   本文件
+├── LICENSE                     Apache-2.0
 ├── references/
 │   ├── key-facts.md            核心数字与规则速查，逐条标注题号
 │   ├── conflicts.md            题库内部矛盾清单与处理建议
@@ -73,16 +75,18 @@ tzkj-student-handbook/
     └── build_bank.py           从原始 TXT 重新生成 data 与 by-topic
 ```
 
+> 目录名和 `SKILL.md` 里的 `name`（`tzkj-student-handbook`）不一致。部分客户端按目录名识别技能，建议 clone 时把目标目录命名为 `tzkj-student-handbook`，下面的命令已经这样处理。
+
 ## 快速开始
 
 ### 方式一：装成 Agent Skill
 
 ```bash
 # macOS / Linux
-git clone <本仓库地址> ~/.claude/skills/tzkj-student-handbook
+git clone https://github.com/yizhipipihe/tzkj-handbook.git ~/.claude/skills/tzkj-student-handbook
 
 # Windows (PowerShell)
-git clone <本仓库地址> "$env:USERPROFILE\.claude\skills\tzkj-student-handbook"
+git clone https://github.com/yizhipipihe/tzkj-handbook.git "$env:USERPROFILE\.claude\skills\tzkj-student-handbook"
 ```
 
 装好后，AI 遇到"台科院学生手册怎么规定"这类问题会自动加载 `SKILL.md`，再按需读速查表或主题题库。
@@ -135,7 +139,7 @@ python scripts/search.py 奖学金 --json
 
 这部分请你务必看，也是本仓库和"随便爬一份题库"的区别所在。
 
-1. **不是官方文件**。内容来自使用者提供的题库 TXT，不是学校发布的《学生手册》原文，可能不含最新修订。
+1. **不是官方文件**。内容来自学习通导出的学生手册配套题库（截至 2026 年，不排除学校后续更新），不是学校发布的《学生手册》原文，可能不含最新修订。
 2. **原文档有格式噪声**。来自 OCR/文本转换：选项字母直接紧贴文字（`A4周B1周`）、答案另起一行且偶尔黏在最后一项末尾、正文中夹着 `P147` 之类的页码。`build_bank.py` 已针对这些做了容错，521 题全部解析出答案，无空答案、无重复题号。
 3. **答案键有错**。已发现并记录 5 处矛盾，例如：
    - 月文明寝室加分：TF-012 / SC-067 写 2 分，PD-037 写 1 分且判"对"；
@@ -167,6 +171,18 @@ python scripts/build_bank.py <新题库.txt>
 - 发现某题答案有问题：提 Issue，写清**题号 + 依据**（手册页码或官方条款）。
 - 修正数据：直接 PR 改 `data/questions.jsonl` 与对应 `references` 文件，**保留原题号**，方便追溯。
 - 新增主题或补充题目：同时更新 `scripts/build_bank.py` 的 `TOPICS`，再重跑构建，避免手写文件被下次生成覆盖。
+
+## 许可
+
+本仓库附带 Apache-2.0（见 `LICENSE`），适用于 **代码与结构化数据**（`scripts/`、`data/` 的字段结构、`SKILL.md` 与 `references/` 的整理成果）。
+
+需要说明的是：**题库原文与学校规章条文的著作权不属于本项目作者**，整理者不对这部分主张任何权利，也不能代替权利人授权。因此：
+
+- 他人使用本仓库时，请把 Apache-2.0 理解为只覆盖整理者的代码与编排工作；
+- 若权利人（学校、题库平台或原作者）认为内容不宜公开，请联系维护者，我们会立即删除相关内容；
+- 如需转载题库原文，请先取得权利人许可。
+
+若希望更严谨，可考虑把内容部分改用 CC BY-NC-SA 4.0（署名—非商业—相同方式共享），与代码许可分开声明。
 
 ## 免责声明
 
